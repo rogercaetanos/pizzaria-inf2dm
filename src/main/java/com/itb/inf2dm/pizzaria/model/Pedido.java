@@ -1,5 +1,6 @@
 package com.itb.inf2dm.pizzaria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -25,8 +26,10 @@ public class Pedido {
     // atributos de apoio
 
     @Transient
+    @JsonIgnore
     private String mensagemErro = "";
     @Transient
+    @JsonIgnore
     private boolean isValid = true;
 
     public Long getId() {

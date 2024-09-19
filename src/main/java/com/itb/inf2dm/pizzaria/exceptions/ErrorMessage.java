@@ -33,7 +33,6 @@ public class ErrorMessage {
         this.status = title.value();
     }
 
-
     // Set e Get
 
     public LocalDateTime getTimestamp() {

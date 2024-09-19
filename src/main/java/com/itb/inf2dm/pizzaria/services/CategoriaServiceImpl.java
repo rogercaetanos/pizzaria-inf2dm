@@ -21,6 +21,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Categoria salvarCategoria(Categoria categoria) {
+        categoria.setCodStatus(true);
         if(!categoria.validarCategoria()){
             throw new BadRequest(categoria.getMensagemErro());
         }
