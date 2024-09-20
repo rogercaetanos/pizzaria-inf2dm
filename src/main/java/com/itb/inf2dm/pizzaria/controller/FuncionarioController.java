@@ -26,6 +26,7 @@ public class FuncionarioController {
 
     // @GetMapping:     complementação da url principal, utilizado exclusivamente em CONSULTAS
     // @PostMapping:    complementação da url principal, utilizado exclusivamente para CADASTRO (INSERT)
+    // @PutMapping:     complementação da url principal, utilizado exclusivamente para ATUALIZAR (UPDATE)
     // ResponseEntity:  Representa a resposta de qualquer tipo de modelo ( Entidade ). Listas ou Objetos
     // @RequestBody:    Representa o objeto recebido do front-end
 
@@ -46,13 +47,24 @@ public class FuncionarioController {
 
     }
 
-
     @PostMapping("/categoria")
     public ResponseEntity<Categoria> salvarCategoria(@RequestBody Categoria categoria) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/funcionario/categoria").toUriString());
 
         return ResponseEntity.created(uri).body(categoriaService.salvarCategoria(categoria));
     }
+
+    @PutMapping("/categoria/{id}")
+    public ResponseEntity<Categoria> atualizarCategoria(@RequestBody Categoria categoria, @PathVariable (value = "id") String id) {
+        try{
+            return ResponseEntity.ok().body(categoriaService.atualizarCategoria(categoria, Long.parseLong(id)));
+        }catch (NumberFormatException ex) {
+            throw new BadRequest("'" + id + "' não é um número inteiro válido. Por favor, fornceça um valor inteiro, como 10");
+        }
+
+    }
+
+
 
 
 
