@@ -7,6 +7,7 @@ package com.itb.inf2dm.pizzaria.controller;
 import com.itb.inf2dm.pizzaria.exceptions.BadRequest;
 import com.itb.inf2dm.pizzaria.model.Categoria;
 import com.itb.inf2dm.pizzaria.services.CategoriaService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,8 +28,10 @@ public class FuncionarioController {
     // @GetMapping:     complementação da url principal, utilizado exclusivamente em CONSULTAS
     // @PostMapping:    complementação da url principal, utilizado exclusivamente para CADASTRO (INSERT)
     // @PutMapping:     complementação da url principal, utilizado exclusivamente para ATUALIZAR (UPDATE)
+    // @DeleteMapping:  complementação da url principal, utilizado exclusivamente para DELETAR (DELETE)
     // ResponseEntity:  Representa a resposta de qualquer tipo de modelo ( Entidade ). Listas ou Objetos
     // @RequestBody:    Representa o objeto recebido do front-end
+    // @PathVariable:   Representa os parâmetros passados pela url (end-point) "variáveis", utilizamos { }
 
     @GetMapping("/categoria")
     public ResponseEntity<List<Categoria>> listarTodasCategorias() {
@@ -48,6 +51,7 @@ public class FuncionarioController {
     }
 
     @PostMapping("/categoria")
+    @Transactional
     public ResponseEntity<Categoria> salvarCategoria(@RequestBody Categoria categoria) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/funcionario/categoria").toUriString());
 
@@ -55,6 +59,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("/categoria/{id}")
+    @Transactional
     public ResponseEntity<Categoria> atualizarCategoria(@RequestBody Categoria categoria, @PathVariable (value = "id") String id) {
         try{
             return ResponseEntity.ok().body(categoriaService.atualizarCategoria(categoria, Long.parseLong(id)));
@@ -64,9 +69,20 @@ public class FuncionarioController {
 
     }
 
+    // Object : Pode representar "qualquer" tipo de objeto: produto, pedido, categoria, String, etc...
 
+    @DeleteMapping("/categoria/{id}")
+    @Transactional
+    public ResponseEntity<Object> deletarCategoria(@PathVariable(value = "id") String id) {
+        try{
+            if(categoriaService.deletarCategoria(Long.parseLong(id))) {
+                return ResponseEntity.ok().body("Categoria com o id " + id + " excluída com sucesso");
+            }
 
-
-
+        }catch (NumberFormatException ex) {
+            throw new BadRequest("'" + id + "' não é um número inteiro válido. Por favor, fornceça um valor inteiro, como 10");
+        }
+        return ResponseEntity.ok().body("Não foi possível a exclusão da categoria com o id " + id);
+    }
 
 }
