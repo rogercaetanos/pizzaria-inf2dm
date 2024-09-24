@@ -86,3 +86,11 @@ public class FuncionarioController {
     }
 
 }
+/*
+Exercício Desafio
+
+Criar uma funcionalidade para a "exclusão lógica" da categoria.
+Obs: A exclusão lógica apenas altera o cod_status do registro no
+     banco de dados de "true" para "false", ou seja, devemos realizar
+     um UPDATE.
+ */
