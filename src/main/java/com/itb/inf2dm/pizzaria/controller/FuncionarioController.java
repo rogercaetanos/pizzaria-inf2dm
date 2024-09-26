@@ -36,14 +36,16 @@ public class FuncionarioController {
     @GetMapping("/categoria")
     public ResponseEntity<List<Categoria>> listarTodasCategorias() {
 
-        return ResponseEntity.ok().body(categoriaService.listarTodasCategorias());
+        //return ResponseEntity.ok().body(categoriaService.listarTodasCategorias());
+        return ResponseEntity.ok().body(categoriaService.listarTodasCategoriasAtivas());
     }
 
 
     @GetMapping("/categoria/{id}")
     public ResponseEntity<Categoria> listarCategoriaPorId(@PathVariable(value = "id") String id) {
         try{
-            return ResponseEntity.ok().body(categoriaService.listarCategoriaPorId(Long.parseLong(id)));
+            //return ResponseEntity.ok().body(categoriaService.listarCategoriaPorId(Long.parseLong(id)));
+            return ResponseEntity.ok().body(categoriaService.listarCategoriaPorIdAtiva(Long.parseLong(id)));
         }catch (NumberFormatException ex) {
             throw new BadRequest("'" + id + "' não é um número inteiro válido. Por favor, fornceça um valor inteiro, como 10");
         }
@@ -85,12 +87,13 @@ public class FuncionarioController {
         return ResponseEntity.ok().body("Não foi possível a exclusão da categoria com o id " + id);
     }
 
+    @PutMapping("/deletar-logic/categoria/{id}")
+    @Transactional
+    public ResponseEntity<Categoria> deletarCategoriaLogic( @PathVariable (value = "id") String id) {
+        try{
+            return ResponseEntity.ok().body(categoriaService.deletarCategoriaLogic(Long.parseLong(id)));
+        }catch (NumberFormatException ex) {
+            throw new BadRequest("'" + id + "' não é um número inteiro válido. Por favor, fornceça um valor inteiro, como 10");
+        }
+    }
 }
-/*
-Exercício Desafio
-
-Criar uma funcionalidade para a "exclusão lógica" da categoria.
-Obs: A exclusão lógica apenas altera o cod_status do registro no
-     banco de dados de "true" para "false", ou seja, devemos realizar
-     um UPDATE.
- */

@@ -10,5 +10,10 @@ public interface CategoriaService {
     public Categoria listarCategoriaPorId(Long id);
     public List<Categoria> listarTodasCategorias();
     public Categoria atualizarCategoria(Categoria categoria, Long id);
+    public List<Categoria> listarTodasCategoriasAtivas();
+    public Categoria listarCategoriaPorIdAtiva(Long id);
+    public Categoria deletarCategoriaLogic(Long id);
+
+
 
 }

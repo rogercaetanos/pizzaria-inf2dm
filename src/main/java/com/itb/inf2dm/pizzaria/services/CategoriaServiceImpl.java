@@ -66,4 +66,29 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new NotFound("Categoria não encontrada com o id " + id);
         }
     }
+
+    @Override
+    public List<Categoria> listarTodasCategoriasAtivas() {
+        return categoriaRepository.listarTodasCategoriasAtivas();
+    }
+
+    @Override
+    public Categoria listarCategoriaPorIdAtiva(Long id) {
+        Categoria categoria = categoriaRepository.listarCategoriaPorIdAtiva(id);
+        if(categoria == null) {
+            throw new NotFound("Categoria não encontrada com o id " + id);
+        }
+        return categoria;
+    }
+
+    @Override
+    public Categoria deletarCategoriaLogic(Long id) {
+        if(!categoriaRepository.existsById(id)) {
+            throw new NotFound("Categoria não encontrada com o id " + id);
+        }
+        Categoria categoria = categoriaRepository.findById(id).get();
+        categoria.setCodStatus(false);
+        return categoriaRepository.save(categoria);
+    }
+
 }
